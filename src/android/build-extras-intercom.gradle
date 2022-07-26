@@ -14,7 +14,7 @@ def safeVersions = [
 ]
 
 def badVersionIndicators = [
-        'alpha',
+        // 'alpha',
         'beta',
         'preview',
         ',)'
