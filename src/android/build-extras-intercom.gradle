@@ -9,28 +9,30 @@ android.defaultConfig.applicationId manifest.@package.text()
 
 // some libraries depend on higher versions of our dependencies than we support
 // we keep track of these dependencies here and override the version to a safe one
-def safeVersions = [
-        "com.android.support:support-v4": "27.+"
-]
+// def safeVersions = [
+//         "com.android.support:support-v4": "27.+"
+// ]
 
-def badVersionIndicators = [
-        'alpha',
-        'beta',
-        'preview',
-        ',)'
-]
+// def badVersionIndicators = [
+//         'alpha',
+//         'beta',
+//         'preview',
+//         ',)'
+// ]
 
-configurations.all {
-    resolutionStrategy.eachDependency {
-        DependencyResolveDetails details ->
-            def requested = details.requested
-            def safeVersion = safeVersions[requested.group + ":" + requested.name]
-            if (!requested.group.equals("androidx.security") && !requested.group.equals("androidx.biometric") && safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
-                println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
-                details.useVersion safeVersion
-            }
-    }
-}
+
+
+// configurations.all {
+//     resolutionStrategy.eachDependency {
+//         DependencyResolveDetails details ->
+//             def requested = details.requested
+//             def safeVersion = safeVersions[requested.group + ":" + requested.name]
+//             if (safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
+//                 println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
+//                 details.useVersion safeVersion
+//             }
+//     }
+// }
 
 afterEvaluate {
     logIfIncorrectCompileSdkVersion()
