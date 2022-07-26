@@ -25,7 +25,7 @@ configurations.all {
         DependencyResolveDetails details ->
             def requested = details.requested
             def safeVersion = safeVersions[requested.group + ":" + requested.name]
-            if (requested.group != "androidx.security" && requested.group != "androidx.biometric" && safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
+            if (!requested.group.equals("androidx.security") && !requested.group.equals("androidx.biometric") && safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
                 println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
                 details.useVersion safeVersion
             }
