@@ -20,19 +20,12 @@ def badVersionIndicators = [
         ',)'
 ]
 
-dependencies {
-    implementation "androidx.security:security-crypto:1.1.0-alpha03"
-    implementation "androidx.biometric:biometric:1.1.0"
-    annotationProcessor 'androidx.room:room-compiler:2.2.5'
-
-}
-
 configurations.all {
     resolutionStrategy.eachDependency {
         DependencyResolveDetails details ->
             def requested = details.requested
             def safeVersion = safeVersions[requested.group + ":" + requested.name]
-            if (requested.group != 'androidx.security' && requested.group != 'androidx.biometric' && safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
+            if (requested.group != "androidx.security" && requested.group != "androidx.biometric" && safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
                 println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
                 details.useVersion safeVersion
             }
