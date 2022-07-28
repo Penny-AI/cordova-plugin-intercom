@@ -20,17 +20,17 @@ import java.util.regex.Matcher
 //         ',)'
 // ]
 
-configurations.all {
-    resolutionStrategy.eachDependency {
-        DependencyResolveDetails details ->
-            def requested = details.requested
-            def safeVersion = safeVersions[requested.group + ":" + requested.name]
-            if (safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
-                println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
-                details.useVersion safeVersion
-            }
-    }
-}
+// configurations.all {
+//     resolutionStrategy.eachDependency {
+//         DependencyResolveDetails details ->
+//             def requested = details.requested
+//             def safeVersion = safeVersions[requested.group + ":" + requested.name]
+//             if (safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
+//                 println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
+//                 details.useVersion safeVersion
+//             }
+//     }
+// }
 
 afterEvaluate {
     logIfIncorrectCompileSdkVersion()
