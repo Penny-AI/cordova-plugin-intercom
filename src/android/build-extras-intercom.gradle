@@ -3,12 +3,12 @@ import java.util.regex.Matcher
 // Uses the app id as a prefix (instead of com.google.android). This prevents
 // INSTALL_FAILED_CONFLICTING_PROVIDER error when installing the app.
 //
-// @link https://issues.apache.org/jira/browse/CB-10014
-def manifest = new XmlSlurper().parse(file("src/main/AndroidManifest.xml"))
-android.defaultConfig.applicationId manifest.@package.text()
+// // @link https://issues.apache.org/jira/browse/CB-10014
+// def manifest = new XmlSlurper().parse(file("src/main/AndroidManifest.xml"))
+// android.defaultConfig.applicationId manifest.@package.text()
 
-// some libraries depend on higher versions of our dependencies than we support
-// we keep track of these dependencies here and override the version to a safe one
+// // some libraries depend on higher versions of our dependencies than we support
+// // we keep track of these dependencies here and override the version to a safe one
 // def safeVersions = [
 //         "com.android.support:support-v4": "27.+"
 // ]
@@ -20,19 +20,17 @@ android.defaultConfig.applicationId manifest.@package.text()
 //         ',)'
 // ]
 
-
-
-// configurations.all {
-//     resolutionStrategy.eachDependency {
-//         DependencyResolveDetails details ->
-//             def requested = details.requested
-//             def safeVersion = safeVersions[requested.group + ":" + requested.name]
-//             if (safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
-//                 println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
-//                 details.useVersion safeVersion
-//             }
-//     }
-// }
+configurations.all {
+    resolutionStrategy.eachDependency {
+        DependencyResolveDetails details ->
+            def requested = details.requested
+            def safeVersion = safeVersions[requested.group + ":" + requested.name]
+            if (safeVersion != null && badVersionIndicators.any { requested.version.contains(it) }) {
+                println "Intercom: Overriding dependency ${requested.group}:${requested.name} version ${requested.version} --> $safeVersion"
+                details.useVersion safeVersion
+            }
+    }
+}
 
 afterEvaluate {
     logIfIncorrectCompileSdkVersion()
